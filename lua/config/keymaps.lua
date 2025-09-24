@@ -26,15 +26,19 @@ cmp.setup({
         ["<C-p>"] = cmp.mapping.select_prev_item(),
         ["<C-e>"] = cmp.mapping.abort(),
 
+        -- Disable arrow keys for completion
+        ["<Up>"] = function(fallback) fallback() end,
+        ["<Down>"] = function(fallback) fallback() end,
+
         -- make enter do a LF if no suggestiosn selected
         ["<CR>"] = cmp.mapping(function(fallback)
-        if cmp.visible() and cmp.get_selected_entry() then
-        -- If menu is open and something is selected -> confirm
-        cmp.confirm({ select = false })
-        else
-        -- Otherwise, just do newline
-        fallback()
-        end
+            if cmp.visible() and cmp.get_selected_entry() then
+                -- If menu is open and something is selected -> confirm
+                cmp.confirm({ select = false })
+            else
+                -- Otherwise, just do newline
+                fallback()
+            end
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({

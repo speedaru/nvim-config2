@@ -47,6 +47,9 @@ return {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
+        "L3MON4D3/LuaSnip",         -- snippet engine
+        "saadparwaiz1/cmp_luasnip", -- bridge between luasnip & cmp
+        "hrsh7th/cmp-nvim-lsp-signature-help", -- function params
       },
       -- Not all LSP servers add brackets when completing a function.
       -- To better deal with this, LazyVim adds a custom option to cmp,

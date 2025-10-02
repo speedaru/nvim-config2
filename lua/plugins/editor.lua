@@ -29,7 +29,7 @@ return {
         opts = {
             servers = {
                 clangd = {
-                    cmd =  { "clangd" },
+                    cmd =  { "clangd", "--completion-style=plain" },
                     filetypes = { "c", "cpp", "h", "hpp" },
                     root_dir = function(...)
                         return require("lspconfig.util").root_pattern("compile_commands.json", ".git")(...)
@@ -73,9 +73,9 @@ return {
 
                           -- Override textEdit for functions/methods
                           if item.kind == 3 or item.kind == 2 then -- Function or Method
-                              item.insertText = item.label .. "()"  -- just function name + ()
-                              item.insertText = item.insertText:gsub("%s+", "")
-                              item.textEdit = nil                  -- remove original textEdit
+                              item.insertText = item.label .. "()" -- fn name + ()
+                              item.insertText = item.insertText:gsub("%s+", "") -- strip ws
+                              item.textEdit = nil   -- remove original textEdit
                           end
 
                           cmp.confirm({ select = true })

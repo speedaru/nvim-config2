@@ -1,4 +1,3 @@
--- pyright lsp settings
 vim.lsp.config("pyright", {
   settings = {
     python = {
@@ -12,12 +11,10 @@ vim.lsp.config("pyright", {
 
 -- code completion
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 vim.lsp.config("clangd", {
   capabilities = capabilities,
 })
-
--- show function signature while typing
-vim.keymap.set("i", "<C-<leader>>", vim.lsp.buf.signature_help, { desc = "Signature help" })
 
 -- show errors/warnings
 vim.keymap.set("n", "<C-b>", function() -- CTRL + b to show error message

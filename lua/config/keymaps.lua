@@ -15,38 +15,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 
--- auto complete binds
-local cmp = require("cmp")
-
-cmp.setup({
-    mapping = cmp.mapping.preset.insert({
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
-        ["<C-n>"] = cmp.mapping.select_next_item(),
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<C-e>"] = cmp.mapping.abort(),
-
-        -- Disable arrow keys for completion
-        ["<Up>"] = function(fallback) fallback() end,
-        ["<Down>"] = function(fallback) fallback() end,
-
-        -- make enter do a LF if no suggestiosn selected
-        ["<CR>"] = cmp.mapping(function(fallback)
-            if cmp.visible() and cmp.get_selected_entry() then
-                -- If menu is open and something is selected -> confirm
-                cmp.confirm({ select = false })
-            else
-                -- Otherwise, just do newline
-                fallback()
-            end
-        end, { "i", "s" }),
-    }),
-    sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "nvim_lsp_signature_help"},-- function params
-    }, {
-        { name = "buffer" },
-        { name = "path" },
-    }),
-})
+-- -- auto complete binds
+-- local cmp = require("cmp")
+--
+-- cmp.setup({
+--     -- formatting = {
+--     --     format = function(entry, vim_item)
+--     --         -- Use cmp.lsp.CompletionItemKind mapping
+--     --         local kind = vim_item.kind
+--     --         if kind == cmp.lsp.CompletionItemKind.Function or kind == cmp.lsp.CompletionItemKind.Method then
+--     --             -- vim_item.abbr = vim_item.abbr:match("^[^(]+") -- strip parameters
+--     --             vim_item.abbr = "nigger"
+--     --         end
+--     --         return vim_item
+--     --     end,
+--     -- },
+-- })

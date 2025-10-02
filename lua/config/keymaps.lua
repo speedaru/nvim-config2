@@ -14,20 +14,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+-- Force <C-v> into Visual Block mode
+vim.keymap.set("n", "<C-v>", "<C-v>", { noremap = true })
 
--- -- auto complete binds
--- local cmp = require("cmp")
---
--- cmp.setup({
---     -- formatting = {
---     --     format = function(entry, vim_item)
---     --         -- Use cmp.lsp.CompletionItemKind mapping
---     --         local kind = vim_item.kind
---     --         if kind == cmp.lsp.CompletionItemKind.Function or kind == cmp.lsp.CompletionItemKind.Method then
---     --             -- vim_item.abbr = vim_item.abbr:match("^[^(]+") -- strip parameters
---     --             vim_item.abbr = "nigger"
---     --         end
---     --         return vim_item
---     --     end,
---     -- },
--- })
+-- Insert mode: go to normal + visual block
+vim.keymap.set("i", "<C-v>", "<Esc><C-v>", { noremap = true })

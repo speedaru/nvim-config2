@@ -11,7 +11,7 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         opts = {
             -- install lsps here
-            ensure_installed = { "lua_ls", "clangd", "pyright" }, 
+            ensure_installed = { "lua_ls", "clangd", "pyright" },
         },
     },
     -- lsp config - configure lsp servers
@@ -21,22 +21,6 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
         },
-        config = function()
-            vim.lsp.config("clangd", {
-                -- clangd server specific config
-            })
-        end,
-        opts = {
-            servers = {
-                clangd = {
-                    cmd =  { "clangd" },
-                    filetypes = { "c", "cpp", "h", "hpp" },
-                    root_dir = function(...)
-                        return require("lspconfig.util").root_pattern("compile_commands.json", ".git")(...)
-                    end,
-                },
-            },
-        }
     },
     -- nvim cmp auto complete
     {
@@ -73,18 +57,21 @@ return {
 
                           -- Override textEdit for functions/methods
                           if item.kind == 3 or item.kind == 2 then -- Function or Method
-                              local label = item.label
+                              -- Take only the part before the first "("
+                              local clean_label = item.label:match("^[^(]+") or item.label
+
                               -- remove bullets and weird Unicode chars
-                              label = label:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c)
+                              local label = clean_label:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c)
                                   -- keep ASCII printable only
                                   if c:match("[%g%p]") then return c else return "" end
                               end)
+
                               item.insertText = label .. "()" -- fn name + ()
                               item.textEdit = nil   -- remove original textEdit
                           end
 
                           cmp.confirm({ select = true })
-                          
+
                           -- Move cursor inside the parentheses only if auto compl func or method
                           if item.kind == 3 or item.kind == 2 then -- Function or Method
                               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Left>", true, false, true), "n", true)

@@ -1,19 +1,29 @@
-vim.lsp.config("pyright", {
-  settings = {
-    python = {
-      analysis = {
-        typeCheckingMode = "strict",
-      },
-    },
-  },
-})
+-- vim.lsp.config("pyright", {
+--   settings = {
+--     python = {
+--       analysis = {
+--         typeCheckingMode = "strict",
+--       },
+--     },
+--   },
+-- })
 
+-- vim.lsp.config.clangd = {
+--   cmd = { 'clangd', '--background-index' },
+--   root_markers = { 'compile_commands.json', 'compile_flags.txt' },
+--   filetypes = { 'c', 'cpp', 'h', 'hpp' }
+-- }
 
--- code completion
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+-- load user clangd config
+local clangd_cfg = dofile(vim.fn.stdpath("config") .. "/lsp/clangd.lua")
 
-vim.lsp.config("clangd", {
-  capabilities = capabilities,
+-- explicitly register it
+vim.lsp.config("clangd", clangd_cfg)
+
+vim.lsp.enable({
+    "clangd",
+    "lua_ls",
+    "pyright"
 })
 
 -- show errors/warnings

@@ -21,3 +21,18 @@ vim.keymap.set("n", "<C-v>", "<C-v>", { noremap = true })
 
 -- Insert mode: go to normal + visual block
 vim.keymap.set("i", "<C-v>", "<Esc><C-v>", { noremap = true })
+
+-- -- Disable lsp signature when pressing up and down arrows
+-- local feedkeys = function(keys)
+--     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "i", true)
+-- end
+-- -- Map Up/Down only in this buffer
+-- vim.keymap.set("i", "<Up>", function()
+--     feedkeys("<A-x>") -- close signature
+--     return "<Up>"
+-- end, { expr = true, noremap = true, silent = true, buffer = bufnr })
+--
+-- vim.keymap.set("i", "<Down>", function()
+--     feedkeys("<A-x>") -- close signature
+--     return "<Down>"
+-- end, { expr = true, noremap = true, silent = true, buffer = bufnr })

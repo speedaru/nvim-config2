@@ -90,11 +90,7 @@ return {
 
                   -- make enter do a LF if no suggestiosn selected
                   ["<CR>"] = cmp.mapping(function(fallback)
-                      if cmp.visible() and cmp.get_selected_entry() then
-                          cmp.confirm({ select = false })
-                      else
-                          fallback()
-                      end
+                      fallback()
                   end, { "i", "s" }),
               }),
               sources = cmp.config.sources({
@@ -128,14 +124,51 @@ return {
     -- show function signature when typing arguments
     {
         "ray-x/lsp_signature.nvim",
-        config = {
+        event = "InsertEnter",
+        opts = {
             bind = true,
-            doc_lines = 0,
-            hint_enable = false,    -- disable inline virtual text hints
-            floating_window = true, -- show in a floating window
+            fix_pos = false,
+            floating_window = true, -- must be true to move dynamically
+            floating_window_above_cur_line = false, -- allow to appear below if more space
+            always_trigger = true,
+            hint_enable = true, -- disable inline hint
+            hint_prefix = "👑",
+            handler_opts = { border = "single" },
+            wrap = false,
+            hi_parameter = "LspSignatureActiveParameter",
+            max_height = 12, -- max height of signature floating_window, include borders
+            max_width = function ()
+                return math.floor(math.max(18, vim.api.nvim_win_get_width(0) * 0.6))
+            end,
+
+            doc_lines = 4,
+            transparency = 20,
+            close_timeout = 2000,
+            timer_interval = 100,
+
+            -- The key fix: dynamic offset
+            floating_window_off_x = 5,
+            floating_window_off_y = function()
+                local linenr = vim.api.nvim_win_get_cursor(0)[1] -- buf line number
+                local pumheight = vim.o.pumheight
+                local winline = vim.fn.winline() -- line number in the window
+                local winheight = vim.fn.winheight(0)
+
+                -- window top
+                if winline - 1 < pumheight then
+                    return pumheight
+                end
+
+                -- window bottom
+                if winheight - winline < pumheight then
+                    return -pumheight
+                end
+                return 0
+            end,
+
+            -- binds
             toggle_key = '<M-x>',   -- example
-            handler_opts = { border = "rounded" },
-            transparency = 10,
+            move_cursor_key = '<M-n>', -- next signature
         },
     },
 }

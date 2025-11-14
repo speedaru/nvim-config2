@@ -1,5 +1,5 @@
 return {
-  cmd = { 'clangd' },
+  cmd = { 'clangd', "--header-insertion=never" },
   root_markers = { '.clangd', 'compile_commands.json', 'compile_flags.txt' },
   filetypes = { 'c', 'cpp', 'h', 'hpp' },
   on_attach = function (client, bufnr)

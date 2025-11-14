@@ -17,7 +17,23 @@ return {
     {
         'numToStr/Comment.nvim',
         opts = {
-            -- add any options here
+            pre_hook = function(ctx)
+                local ft = require("Comment.ft")
+                ft.asm = "; %s"
+            end,
         },
     },
+    -- smooth scrolling
+    {
+        "karb94/neoscroll.nvim",
+        config = function()
+            require("neoscroll").setup({
+                easing_function = "cubic", -- makes it smooth
+                hide_cursor = true,
+                stop_eof = true,
+                respect_scrolloff = false,
+                duration_multiplier = 0.7
+            })
+        end,
+    }
 }

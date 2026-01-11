@@ -36,3 +36,14 @@ vim.keymap.set("i", "<C-v>", "<Esc><C-v>", { noremap = true })
 --     feedkeys("<A-x>") -- close signature
 --     return "<Down>"
 -- end, { expr = true, noremap = true, silent = true, buffer = bufnr })
+
+-- Remap yanks to use OSC52
+local osc52 = require('osc52')
+
+vim.keymap.set('n', '<leader>y', function()
+  osc52.copy_register('"')
+  end)
+
+  vim.keymap.set('v', '<leader>y', function()
+    osc52.copy_visual()
+end)

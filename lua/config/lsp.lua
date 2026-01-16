@@ -1,23 +1,7 @@
--- vim.lsp.config("pyright", {
---   settings = {
---     python = {
---       analysis = {
---         typeCheckingMode = "strict",
---       },
---     },
---   },
--- })
+-- Load user clangd config
+local clangd_cfg = require("lsp.clangd")
 
--- vim.lsp.config.clangd = {
---   cmd = { 'clangd', '--background-index' },
---   root_markers = { 'compile_commands.json', 'compile_flags.txt' },
---   filetypes = { 'c', 'cpp', 'h', 'hpp' }
--- }
-
--- load user clangd config
-local clangd_cfg = dofile(vim.fn.stdpath("config") .. "/lsp/clangd.lua")
-
--- explicitly register it
+-- Register clangd manually with new API
 vim.lsp.config("clangd", clangd_cfg)
 
 vim.lsp.enable({

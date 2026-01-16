@@ -11,7 +11,7 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         opts = {
             -- install lsps here
-            ensure_installed = { "lua_ls", "clangd", "pyright" },
+            ensure_installed = { "lua_ls", "clangd", "pyright", "jdtls" },
         },
     },
     -- lsp config - configure lsp servers
@@ -21,6 +21,14 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
         },
+    },
+    -- lsp java jdtls plugin
+    {
+        "mfussenegger/nvim-jdtls",
+        ft = "java",          -- lazy-load on java files
+        config = function()
+            -- optional: you can require("lsp.jdtls") here
+        end,
     },
     -- nvim cmp auto complete
     {
@@ -48,34 +56,28 @@ return {
                   -- ["<S-Tab>"] = cmp.mapping.confirm({ select = true }),
                   ["<S-Tab>"] = cmp.mapping(function(fallback)
                       if cmp.visible() then
-                          local entry = cmp.get_entries()[1] -- by default set entry to first
-                          if cmp.get_selected_entry() then -- if a specific entry is selected use that one
-                              entry = cmp.get_selected_entry()
-                          end
+                          local entry = cmp.get_selected_entry() or cmp.get_entries()[1]
+                          local item = entry:get_completion_item()
 
-                          local item = entry.completion_item
+                          -- 2: Method, 3: Function
+                          if item.kind == 2 or item.kind == 3 then
+                              -- 1. Get a clean name (strip everything after ( or < for Java Generics)
+                              local label = item.label:match("^[^(<]+") or item.label
+                              label = label:gsub("%s+", "") -- Remove any trailing whitespace
 
-                          -- Override textEdit for functions/methods
-                          if item.kind == 3 or item.kind == 2 then -- Function or Method
-                              -- Take only the part before the first "("
-                              local clean_label = item.label:match("^[^(]+") or item.label
+                              -- 2. Force the insert text to be EXACTLY what you want
+                              -- Using Lsp-style snippet syntax $0 puts the cursor inside
+                              item.insertText = label .. "($0)"
+                              -- item.insertTextFormat = 2 -- 2 means Snippet format
+                              item.insertTextFormat = 1
 
-                              -- remove bullets and weird Unicode chars
-                              local label = clean_label:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c)
-                                  -- keep ASCII printable only
-                                  if c:match("[%g%p]") then return c else return "" end
-                              end)
-
-                              item.insertText = label .. "()" -- fn name + ()
-                              item.textEdit = nil   -- remove original textEdit
+                              -- 3. IMPORTANT: Clear the textEdit. 
+                              -- Java uses this to insert arguments; if we don't nil it, it overrides insertText.
+                              item.textEdit = nil
+                              item.snippet = nil;
                           end
 
                           cmp.confirm({ select = true })
-
-                          -- Move cursor inside the parentheses only if auto compl func or method
-                          if item.kind == 3 or item.kind == 2 then -- Function or Method
-                              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Left>", true, false, true), "n", true)
-                          end
                       else
                           fallback()
                       end

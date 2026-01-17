@@ -68,13 +68,11 @@ return {
                               -- 2. Force the insert text to be EXACTLY what you want
                               -- Using Lsp-style snippet syntax $0 puts the cursor inside
                               item.insertText = label .. "($0)"
-                              -- item.insertTextFormat = 2 -- 2 means Snippet format
-                              item.insertTextFormat = 1
+                              item.insertTextFormat = 2 -- 2 means Snippet format
 
                               -- 3. IMPORTANT: Clear the textEdit. 
                               -- Java uses this to insert arguments; if we don't nil it, it overrides insertText.
                               item.textEdit = nil
-                              item.snippet = nil;
                           end
 
                           cmp.confirm({ select = true })

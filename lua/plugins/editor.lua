@@ -11,7 +11,15 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         opts = {
             -- install lsps here
-            ensure_installed = { "lua_ls", "clangd", "pyright", "jdtls" },
+            ensure_installed = {
+                "lua_ls",
+                "clangd",
+                "pyright",
+                "jdtls",
+                "intelephense",
+                -- "phpactor"
+                "zls",
+            },
         },
     },
     -- lsp config - configure lsp servers

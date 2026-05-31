@@ -4,10 +4,19 @@ local clangd_cfg = require("lsp.clangd")
 -- Register clangd manually with new API
 vim.lsp.config("clangd", clangd_cfg)
 
+-- Register PHP (Intelephense)
+-- empty for default settings
+vim.lsp.config("intelephense", {}) 
+
+vim.lsp.config("zls", {})
+
 vim.lsp.enable({
     "clangd",
     "lua_ls",
-    "pyright"
+    "pyright",
+    "intelephense",
+    -- "phpactor"
+    "zls",
 })
 
 -- INIT LSP SIGNATURE

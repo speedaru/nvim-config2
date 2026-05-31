@@ -72,5 +72,21 @@ return {
                 }
             end)
         end
-    }
+    },
+    -- treesitter syntax highlighting
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+        main = "nvim-treesitter", 
+        opts = {
+            ensure_installed = {
+                "php", "phpdoc", "html", "lua", "cpp", "java", "python",
+                "zig"
+            },
+            highlight = { 
+                enable = true,
+                additional_vim_regex_highlighting = false, 
+            },
+        },
+    },
 }

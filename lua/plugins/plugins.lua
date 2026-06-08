@@ -80,8 +80,7 @@ return {
         main = "nvim-treesitter", 
         opts = {
             ensure_installed = {
-                "php", "phpdoc", "html", "lua", "cpp", "java", "python",
-                "zig"
+                "php", "phpdoc", "html", "lua", "cpp", "java", "python", "zig"
             },
             highlight = { 
                 enable = true,

@@ -8,7 +8,15 @@ vim.lsp.config("clangd", clangd_cfg)
 -- empty for default settings
 vim.lsp.config("intelephense", {}) 
 
-vim.lsp.config("zls", {})
+vim.lsp.config("zls", {
+  settings = {
+    zls = {
+      enable_autofix = true, -- Auto-fix minor issues like missing try/catch
+      enable_snippets = true,
+      warn_style = true,     -- Warn about style guide violations
+    },
+  },
+})
 
 vim.lsp.enable({
     "clangd",
